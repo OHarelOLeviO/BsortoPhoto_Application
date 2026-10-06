@@ -1,4 +1,14 @@
 @import "tailwindcss";
+select {
+  width: 100%;
+  margin-top: 8px;
+  background: #f8faff;
+  border: 1px solid #cdd8e8;
+  border-radius: 10px;
+  padding: 14px;
+  font: inherit;
+  min-height: 48px;
+}
 @theme {
   --font-sans: Arial, "Noto Sans Hebrew", sans-serif;
 }
