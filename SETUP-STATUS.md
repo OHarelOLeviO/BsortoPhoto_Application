@@ -1,19 +1,10 @@
-# Connection status — 7 October 2026
+# Live setup — 7 October 2026
 
+Website: https://oharelolevio.github.io/BsortoPhoto_Application/
 Repository: https://github.com/OHarelOLeviO/BsortoPhoto_Application
 
-Supabase project: https://igtavvjwxrjfmybwmntl.supabase.co
+Name-only login is deployed to GitHub Pages and the Supabase name-login Edge Function. The existing six teams and 56 members were preserved; the old tables were archived in a private company_legacy schema. Existing members are imported into pending_members and linked to Supabase Auth automatically on their first name selection. No member names, passwords or administrative keys are committed to GitHub.
 
-The supplied publishable key is accepted by Supabase. Local frontend configuration and the GitHub Actions public defaults are configured, with `/BsortoPhoto_Application/` as the Pages base. Only public client configuration is tracked. No administrative key was supplied or stored.
+Database RLS and the private company-photos bucket remain enabled. The public function intentionally allows anyone to select any active member, as requested. No access code is required.
 
-Read-only live probes found:
-
-- Email authentication enabled; public signup still enabled.
-- An existing `public.teams` table is readable by an unauthenticated request.
-- `public.profiles` is absent from the API schema cache.
-
-The fresh-project migration cannot simply be applied over the existing `teams` table. Inspect its schema and dependencies through the project owner connection first, then prepare a compatible migration that preserves existing data. No member names or photos were fetched by the probes. No existing backend data was modified.
-
-Git remote is configured locally. The repository advertised no refs when inspected. Push failed because this session could not use Git Credential Manager; no code was pushed. GitHub and Supabase owner connections are needed to continue remote setup without exchanging private credentials.
-
-Next: authorize GitHub repository access and Supabase project access through their plugins; inspect existing schema; apply the compatible migration and storage policies; disable signup; provision fictional test accounts through the Admin API; run live authorization and browser tests; enable GitHub Pages with Actions; push and verify deployment. Real member provisioning remains a local/private operation.
+Live checks passed: all 56 directory entries, token issuance, session verification, authenticated profile/feed reads, browser login, refresh restoration and logout. Anonymous direct profile access is denied. Local typecheck, lint, build and 30 tests passed. Full live photo-upload, like and mobile acceptance checks remain pending.

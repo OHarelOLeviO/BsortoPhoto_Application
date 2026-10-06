@@ -1,23 +1,9 @@
-# Verification record
+# Verification — 7 October 2026
 
-Local verification completed on 7 October 2026:
+- TypeScript, ESLint and production build passed.
+- 30 tests in 11 files passed, including image validation, pagination, likes, profile search, sessions, RLS/storage ownership, name-login validation and preservation of existing members.
+- Applied compatible migrations to the real Supabase project, preserving six teams and 56 members. No existing photos were present.
+- Live public directory returned 56 members. Magic-link token verification, authenticated profile/feed queries and logout passed. Anonymous direct profile access was denied.
+- Live browser name selection opened the feed, refresh restored the session, and logout returned to the name picker.
 
-- Strict TypeScript check: passed.
-- ESLint: passed with no warnings.
-- Vitest: 20 tests in 7 files passed.
-- Production build: passed.
-- Repository-subpath build: asset links checked against emitted files.
-- npm dependency audit after installation: no known vulnerabilities reported.
-
-Tests cover image type/size and dimensions; identifier mapping and duplicate CSV rejection; upload insertion failure cleanup; no overwrite; session restoration/logout event and inactive membership; pagination reset, deduplication and stale response handling; shared like optimism, overlap prevention, reconciliation and rollback; debounced Hebrew search with stale result protection; viewer modal lifecycle, cancel handling, scroll lock and focus restoration.
-
-PGlite runs the actual migration on a local PostgreSQL engine, with minimal test-only auth/storage schemas. Tests exercise anonymous restrictions, profile edit denial, storage folder ownership, like ownership/deletion/uniqueness, inactive member read/write restrictions, invoker feed behavior, team filtering before pagination, composite cursors and uploader team changes. These schemas are test fixtures, not a substitute for the Supabase services.
-
-Awaiting external configuration:
-
-- Applying migrations to a real Supabase project.
-- Running `npm run test:auth` against real Auth, PostgREST and Storage with disposable fictional members.
-- Actual image decoding, orientation and EXIF removal in supported browsers, signed-URL expiration, full interaction and mobile visual QA.
-- GitHub Pages deployment and live route/asset verification.
-
-The application is not deployed, and live end-to-end verification has not been claimed. See the Hebrew README for exact setup commands and the manual acceptance checklist.
+Not yet verified end-to-end on the live service: actual photo upload/EXIF decoding, likes with multiple members, signed-URL expiry and mobile acceptance. Local authorization tests use PGlite fixtures and do not replace live Storage checks.
