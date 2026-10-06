@@ -1,0 +1,19 @@
+{
+  "name": "BsortoPhoto",
+  "short_name": "BsortoPhoto",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b121d",
+  "theme_color": "#0b121d",
+  "icons": [
+    {
+      "src": "bsortophoto-logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
