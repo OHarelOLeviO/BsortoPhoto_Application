@@ -47,13 +47,10 @@ export function Login() {
   return (
     <main className="login">
       <img className="brand-mark" src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="הלוגו של BsortoPhoto" />
-      <p className="eyebrow">האלבום של כולנו</p>
       <h1 dir="ltr">BsortoPhoto</h1>
-      <p className="muted">התמונות, האנשים והזיכרונות שנשארים איתנו.</p>
       <form className="card login-form" onSubmit={submit}>
-        <p className="eyebrow">ברוכים הבאים</p>
-        <h2>הרגעים הכי טובים מתחילים כאן.</h2>
-        <label htmlFor="member-choice">מה השם שלך?</label>
+        <h2>כניסה</h2>
+        <label htmlFor="member-choice">שם</label>
         <select
           id="member-choice"
           required
@@ -86,7 +83,6 @@ export function Login() {
         <button className="primary" disabled={loading || busy || !selected}>
           {busy ? "מתחברים…" : "כניסה לאלבום"}
         </button>
-        <small>בוחרים שם ונכנסים — ללא קוד גישה.</small>
       </form>
     </main>
   );

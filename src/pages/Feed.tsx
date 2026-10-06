@@ -30,9 +30,7 @@ export function Feed() {
   return (
     <>
       <div className="page-heading">
-        <p className="eyebrow">ביחד, גם בתמונות</p>
         <h1>האלבום שלנו</h1>
-        <p className="muted">האנשים שלנו. הסיפורים שלנו. הרגעים שנשארים.</p>
       </div>
       <div className="filters" aria-label="סינון לפי צוות">
         <button
@@ -88,6 +86,7 @@ export function ListStatus({
   load: (reset?: boolean) => Promise<void>;
   empty: string;
 }) {
+  if (!loading && !error && posts.length > 0 && !more) return null;
   return (
     <div className="list-status" aria-live="polite">
       {loading ? (
@@ -101,9 +100,7 @@ export function ListStatus({
         <p>{empty}</p>
       ) : more ? (
         <button onClick={() => void load()}>עוד רגעים</button>
-      ) : (
-        <p className="muted">כל התמונות כאן</p>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -44,9 +44,7 @@ export function Upload() {
   return (
     <>
       <div className="page-heading">
-        <p className="eyebrow">עוד זיכרון משותף</p>
         <h1>העלאת תמונה</h1>
-        <p className="muted">רגע קטן שלך, באלבום של כולנו.</p>
       </div>
       <form onSubmit={submit} className="card upload">
         <label className="dropzone">
@@ -77,7 +75,6 @@ export function Upload() {
             alt="תצוגה מקדימה לפני העלאה"
           />
         )}
-        <p className="muted">התמונה תותאם למסך ופרטי המיקום והמצלמה יוסרו.</p>
         {error && (
           <p role="alert" className="error">
             {error}
