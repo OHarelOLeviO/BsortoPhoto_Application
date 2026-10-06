@@ -31,7 +31,7 @@ create policy posts_insert on public.posts for insert to authenticated with chec
 create policy likes_insert on public.likes for insert to authenticated with check((select public.is_active_member()) and user_id=(select auth.uid()));
 create policy likes_delete on public.likes for delete to authenticated using((select public.is_active_member()) and user_id=(select auth.uid()));
 
-insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('company-photos','company-photos',false,15728640,array['image/jpeg','image/png','image/webp']);
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('company-photos','company-photos',false,15728640,array['image/jpeg','image/png','image/webp']) on conflict(id) do update set public=false,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
 create policy photos_read on storage.objects for select to authenticated using(bucket_id='company-photos' and (select public.is_active_member()));
 create policy photos_insert on storage.objects for insert to authenticated with check(bucket_id='company-photos' and (select public.is_active_member()) and name ~ ('^' || (select auth.uid())::text || '/[0-9a-f-]{36}\.jpg$'));
 -- Cleanup is permitted only before the object is linked to a post.
