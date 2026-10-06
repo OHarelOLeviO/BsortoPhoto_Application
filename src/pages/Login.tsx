@@ -63,7 +63,7 @@ export function Login() {
           </option>
           {members.map((member) => (
             <option key={member.id} value={member.id}>
-              {member.display_name} · {member.team_name}
+              {member.team_name} · {member.display_name}
             </option>
           ))}
         </select>

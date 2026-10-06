@@ -22,7 +22,7 @@ it("loads database names and logs into the selected ID without a password", asyn
   ]);
   mock.loginAsMember.mockResolvedValue({});
   render(<Login />);
-  await screen.findByRole("option", { name: "נועם · ניצן" });
+  await screen.findByRole("option", { name: "ניצן · נועם" });
   expect(screen.queryByLabelText("קוד גישה אישי")).toBeNull();
   expect(
     (screen.getByRole("button", { name: "כניסה לאלבום" }) as HTMLButtonElement)
@@ -40,5 +40,6 @@ it("shows a retry action when the real directory is unavailable", async () => {
     ]);
   render(<Login />);
   fireEvent.click(await screen.findByRole("button", { name: "נסה שוב" }));
-  await screen.findByRole("option", { name: "תמר · ניצן" });
+  await screen.findByRole("option", { name: "ניצן · תמר" });
 });
+
