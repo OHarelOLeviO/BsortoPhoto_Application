@@ -1,32 +1,46 @@
-import { useState, type FormEvent } from "react";
-import { supabase } from "../services/client";
-import { memberEmail } from "../utils/identity";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  listLoginMembers,
+  loginAsMember,
+  type MemberChoice,
+} from "../services/nameLogin";
 export function Login() {
-  const [identifier, setIdentifier] = useState("");
-  const [code, setCode] = useState("");
+  const [members, setMembers] = useState<MemberChoice[]>([]);
+  const [selected, setSelected] = useState("");
+  const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [revision, setRevision] = useState(0);
+  const lock = useRef(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError("");
+    listLoginMembers(controller.signal)
+      .then((rows) => {
+        if (!controller.signal.aborted) setMembers(rows);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted)
+          setError("לא ניתן לטעון את השמות. נסה שוב.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, [revision]);
   async function submit(e: FormEvent) {
     e.preventDefault();
-    if (busy) return;
+    if (!selected || lock.current) return;
+    lock.current = true;
     setBusy(true);
     setError("");
     try {
-      const email = memberEmail(
-        identifier,
-        import.meta.env.VITE_AUTH_EMAIL_DOMAIN,
-      );
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password: code,
-      });
-      if (error)
-        throw new Error(
-          "המזהה או קוד הגישה אינם נכונים, או שאין חיבור. נסה שוב.",
-        );
+      await loginAsMember(selected);
     } catch (e) {
       setError((e as Error).message);
     } finally {
+      lock.current = false;
       setBusy(false);
     }
   }
@@ -38,36 +52,41 @@ export function Login() {
       <p className="muted">התמונות, האנשים והזיכרונות שנשארים איתנו.</p>
       <form className="card login-form" onSubmit={submit}>
         <h2>טוב לראות אותך</h2>
-        <label>
-          מזהה חבר
-          <input
-            dir="ltr"
-            autoComplete="username"
-            required
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-          />
-        </label>
-        <label>
-          קוד גישה אישי
-          <input
-            dir="ltr"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-        </label>
-        {error && (
-          <p role="alert" className="error">
-            {error}
-          </p>
+        <label htmlFor="member-choice">מה השם שלך?</label>
+        <select
+          id="member-choice"
+          style={{width:'100%',marginTop:8,background:'#f8faff',border:'1px solid #cdd8e8',borderRadius:10,padding:14,font:'inherit',minHeight:48}}
+          required
+          disabled={loading || busy}
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+        >
+          <option value="">
+            {loading ? "טוענים שמות…" : "בחירת שם מהרשימה"}
+          </option>
+          {members.map((member) => (
+            <option key={member.id} value={member.id}>
+              {member.display_name} · {member.team_name}
+            </option>
+          ))}
+        </select>
+        {!loading && !error && !members.length && (
+          <p>עדיין אין חברים ברשימה. פנה למנהל האתר.</p>
         )}
-        <button className="primary" disabled={busy}>
+        {error && (
+          <div role="alert">
+            <p className="error">{error}</p>
+            {!members.length && (
+              <button type="button" onClick={() => setRevision((v) => v + 1)}>
+                נסה שוב
+              </button>
+            )}
+          </div>
+        )}
+        <button className="primary" disabled={loading || busy || !selected}>
           {busy ? "מתחברים…" : "כניסה לאלבום"}
         </button>
-        <small>אין לך קוד גישה? פנה למנהל האתר.</small>
+        <small>בוחרים שם ונכנסים — ללא קוד גישה.</small>
       </form>
     </main>
   );
