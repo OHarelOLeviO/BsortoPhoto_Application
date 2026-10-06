@@ -8,7 +8,6 @@ import { Login } from "./pages/Login";
 import { Feed } from "./pages/Feed";
 import { Upload } from "./pages/Upload";
 import { Profile } from "./pages/Profile";
-import { Search } from "./pages/Search";
 import { useState } from "react";
 import "./styles.css";
 function App() {
@@ -38,7 +37,8 @@ function App() {
     <LikesProvider key={session.user.id}>
       <header className="topbar">
         <NavLink className="logo" to="/">
-          📷 הרגעים שלנו
+          <img src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="" />
+          <span dir="ltr">BsortoPhoto</span>
         </NavLink>
         <span className="welcome">שלום, {profile.display_name}</span>
         <button onClick={() => void logout()}>התנתקות</button>
@@ -59,16 +59,12 @@ function App() {
           <NavLink to={`/user/${profile.id}`}>
             ◯ <span>הפרופיל שלי</span>
           </NavLink>
-          <NavLink to="/search">
-            ⌕ <span>חברים</span>
-          </NavLink>
         </nav>
         <main className="content">
           <Routes>
             <Route path="/" element={<Feed />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/user/:id" element={<Profile />} />
-            <Route path="/search" element={<Search />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
@@ -86,8 +82,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       </HashRouter>
     ) : (
       <main className="login">
-        <div className="brand-mark">📷</div>
-        <h1>הרגעים שלנו</h1>
+        <img className="brand-mark" src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="BsortoPhoto" />
+        <h1 dir="ltr">BsortoPhoto</h1>
         <p>האתר מחכה לחיבור ל-Supabase.</p>
         <p>
           מנהל האתר צריך להגדיר את כתובת הפרויקט, המפתח הציבורי ודומיין ההתחברות
