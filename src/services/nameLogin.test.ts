@@ -11,11 +11,11 @@ beforeEach(() => vi.resetAllMocks());
 it("fetches every directory page", async () => {
   mock.invoke
     .mockResolvedValueOnce({
-      data: { members: [{ id: "one" }], nextPage: 1 },
+      data: { members: [{ id: "one", display_name: "אורי", team_name: "א" }], nextPage: 1 },
       error: null,
     })
     .mockResolvedValueOnce({
-      data: { members: [{ id: "two" }], nextPage: null },
+      data: { members: [{ id: "two", display_name: "בני", team_name: "ב" }], nextPage: null },
       error: null,
     });
   expect((await listLoginMembers()).map((p) => p.id)).toEqual(["one", "two"]);
@@ -41,4 +41,9 @@ it("never authenticates after the bridge rejects the member", async () => {
   mock.invoke.mockResolvedValue({ data: null, error: {} });
   await expect(loginAsMember("inactive")).rejects.toThrow("הכניסה נכשלה");
   expect(mock.verifyOtp).not.toHaveBeenCalled();
+});
+
+it("sorts all pages by team, then member name", async () => {
+ mock.invoke.mockResolvedValueOnce({data:{members:[{id:"1",team_name:"ב",display_name:"אורי"},{id:"2",team_name:"א",display_name:"תמר"}],nextPage:1},error:null}).mockResolvedValueOnce({data:{members:[{id:"3",team_name:"א",display_name:"אורי"}],nextPage:null},error:null});
+ expect((await listLoginMembers()).map(p=>p.id)).toEqual(["3","2","1"]);
 });

@@ -15,7 +15,14 @@ export async function listLoginMembers(signal?: AbortSignal) {
     if (error || !data || !Array.isArray(data.members))
       throw new Error("לא ניתן לטעון את השמות. נסה שוב.");
     members.push(...data.members);
-    if (data.nextPage === null) return members;
+    if (data.nextPage === null) {
+      const collator = new Intl.Collator("he", { numeric: true });
+      return members.sort((a, b) =>
+        collator.compare(a.team_name, b.team_name) ||
+        collator.compare(a.display_name, b.display_name) ||
+        a.id.localeCompare(b.id),
+      );
+    }
   }
 }
 export async function loginAsMember(profileId: string) {
