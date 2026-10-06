@@ -15,4 +15,8 @@ export default ts.config(
       "react-hooks/exhaustive-deps": "warn",
     },
   },
+  {
+    files: ["supabase/functions/**/*.ts"],
+    languageOptions: { globals: { Deno: "readonly" } },
+  },
 );

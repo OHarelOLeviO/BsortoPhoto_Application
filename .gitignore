@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env*
+!.env.example
+!.env.admin.example
+*.csv
+!members.example.csv
+credentials*.jsonl
+coverage/
+*.log
