@@ -46,16 +46,16 @@ export function Login() {
   }
   return (
     <main className="login">
-      <div className="brand-mark">📷</div>
+      <img className="brand-mark" src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="הלוגו של BsortoPhoto" />
       <p className="eyebrow">האלבום של כולנו</p>
-      <h1>הרגעים שלנו</h1>
+      <h1 dir="ltr">BsortoPhoto</h1>
       <p className="muted">התמונות, האנשים והזיכרונות שנשארים איתנו.</p>
       <form className="card login-form" onSubmit={submit}>
-        <h2>טוב לראות אותך</h2>
+        <p className="eyebrow">ברוכים הבאים</p>
+        <h2>הרגעים הכי טובים מתחילים כאן.</h2>
         <label htmlFor="member-choice">מה השם שלך?</label>
         <select
           id="member-choice"
-          style={{width:'100%',marginTop:8,background:'#f8faff',border:'1px solid #cdd8e8',borderRadius:10,padding:14,font:'inherit',minHeight:48}}
           required
           disabled={loading || busy}
           value={selected}

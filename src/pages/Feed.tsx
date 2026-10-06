@@ -31,8 +31,8 @@ export function Feed() {
     <>
       <div className="page-heading">
         <p className="eyebrow">ביחד, גם בתמונות</p>
-        <h1>הרגעים שלנו</h1>
-        <p className="muted">כל התמונות במקום אחד.</p>
+        <h1>האלבום שלנו</h1>
+        <p className="muted">האנשים שלנו. הסיפורים שלנו. הרגעים שנשארים.</p>
       </div>
       <div className="filters" aria-label="סינון לפי צוות">
         <button
