@@ -40,7 +40,6 @@ function App() {
           <img src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="" />
           <span dir="ltr">BsortoPhoto</span>
         </NavLink>
-        <span className="welcome">שלום, {profile.display_name}</span>
         <button onClick={() => void logout()}>התנתקות</button>
       </header>
       {logoutError && (

@@ -10,10 +10,10 @@ select {
   min-height: 48px;
 }
 @theme {
-  --font-sans: Arial, "Noto Sans Hebrew", sans-serif;
+  --font-sans: "Heebo", Arial, sans-serif;
 }
 :root {
-  font-family: Arial, sans-serif;
+  font-family: "Heebo", Arial, sans-serif;
   color: #162641;
   background: #f3f6fb;
   font-synthesis: none;
@@ -54,7 +54,7 @@ a {
 }
 h1 {
   font-size: clamp(28px, 4vw, 38px);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -1px;
   margin: 8px 0;
 }
@@ -152,7 +152,7 @@ label + label {
 }
 .logo {
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .welcome {
   margin-right: auto;
@@ -621,3 +621,16 @@ h2 {line-height:1.4;}
  .grid-photo {border-radius:10px;}
 }
 @media(prefers-reduced-motion:reduce) {button {transition:none;}.primary:not(:disabled):hover {transform:none;}}
+
+@font-face {font-family:"Heebo";font-style:normal;font-weight:400;font-display:swap;src:url("./assets/fonts/heebo-400.ttf") format("truetype");}
+@font-face {font-family:"Heebo";font-style:normal;font-weight:600;font-display:swap;src:url("./assets/fonts/heebo-600.ttf") format("truetype");}
+@font-face {font-family:"Heebo";font-style:normal;font-weight:700;font-display:swap;src:url("./assets/fonts/heebo-700.ttf") format("truetype");}
+body {line-height:1.6;-webkit-font-smoothing:antialiased;}
+button,input,select,textarea {font-family:inherit;}
+h1,h2,.logo {font-weight:700;letter-spacing:-.5px;}
+.login > h1 {grid-row:2;letter-spacing:-1px;font-weight:700;}
+.login-form {grid-row:1 / 3;}
+.login-form h2 {font-size:26px;margin:0 0 24px;}
+.login-form .primary {margin-bottom:0;}
+.topbar button {margin-inline-start:auto;}
+@media(max-width:800px){.login-form {margin-top:24px;}.login-form h2 {font-size:24px;}.login > h1 {letter-spacing:-1px;}}
