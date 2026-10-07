@@ -427,6 +427,14 @@ label + label {
   width: fit-content;
   max-height: 92dvh;
   overflow: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+.viewer-header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px;
 }
 .viewer::backdrop {
   background: #0b1424db;
@@ -445,8 +453,8 @@ label + label {
   top: 12px;
   margin: 12px;
   z-index: 2;
-  background: #fff;
-  color: #15213a;
+  background: red;
+  color: white;
   float: left;
 }
 .viewer-info {
@@ -647,7 +655,7 @@ h1,h2,.logo {font-weight:700;letter-spacing:-.5px;}
 .viewer {position:fixed;inset:0;margin:auto;width:fit-content;height:fit-content;max-width:min(1000px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;}
 .viewer[open] {display:flex;flex-direction:column;}
 .viewer .close {position:absolute;top:12px;inset-inline-end:12px;margin:0;float:none;z-index:2;}
-.viewer-media {display:grid;place-items:center;padding:60px 16px 16px;background:#08121e;}
+.viewer-media {display:grid;place-items:center;padding:60px 16px 16px;}
 .viewer-media > img {display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 270px);object-fit:contain;margin:auto;}
 .viewer-media .image-loading {max-height:calc(100dvh - 270px);min-width:min(480px,70vw);}
 .viewer-info {display:grid;grid-template-columns:1fr;justify-items:center;text-align:center;gap:8px;padding:16px 24px;clear:none;}

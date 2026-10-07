@@ -27,21 +27,23 @@ export function Viewer({ post, onClose }: { post: Post; onClose: () => void }) {
       }}
       aria-labelledby="viewer-name"
     >
-      <button
-        className="close"
-        autoFocus
-        onClick={onClose}
-        aria-label="סגירת תמונה"
-      >
-        ✕
-      </button>
+      <div className="viewer-header">
+        <button
+          className="close"
+          autoFocus
+          onClick={onClose}
+          aria-label="סגירת תמונה"
+        >
+          ✕
+        </button>
+      </div>
       <div className="viewer-media">
-      <Photo
-        path={post.image_path}
-        alt={`תמונה של ${post.display_name}`}
-        width={post.image_width}
-        height={post.image_height}
-      />
+        <Photo
+          path={post.image_path}
+          alt={`תמונה של ${post.display_name}`}
+          width={post.image_width}
+          height={post.image_height}
+        />
       </div>
       <div className="viewer-info">
         <Link id="viewer-name" to={`/user/${post.user_id}`} onClick={onClose}>
