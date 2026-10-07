@@ -35,12 +35,14 @@ export function Viewer({ post, onClose }: { post: Post; onClose: () => void }) {
       >
         ✕
       </button>
+      <div className="viewer-media">
       <Photo
         path={post.image_path}
         alt={`תמונה של ${post.display_name}`}
         width={post.image_width}
         height={post.image_height}
       />
+      </div>
       <div className="viewer-info">
         <Link id="viewer-name" to={`/user/${post.user_id}`} onClick={onClose}>
           {post.display_name} · {post.team_name}

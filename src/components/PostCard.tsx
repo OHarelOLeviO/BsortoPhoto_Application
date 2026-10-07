@@ -13,7 +13,7 @@ export function Like({ post }: { post: Post }) {
   const state = values[post.id] || post;
   const [error, setError] = useState("");
   return (
-    <div>
+    <div className="like-control">
       <button
         className={`like ${state.liked ? "selected" : ""}`}
         aria-pressed={state.liked}
@@ -23,7 +23,8 @@ export function Like({ post }: { post: Post }) {
           void toggle(post).catch((e) => setError((e as Error).message));
         }}
       >
-        {state.liked ? "♥" : "♡"} <span>{state.like_count}</span>
+        <span className="like-icon" aria-hidden="true">{state.liked ? "♥" : "♡"}</span>
+        <span className="like-count">{state.like_count}</span>
         <span className="sr-only"> לייקים</span>
       </button>
       {error && (
