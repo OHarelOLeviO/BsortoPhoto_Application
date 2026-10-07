@@ -49,10 +49,11 @@ export function Login() {
   }
   return (
     <main className="login">
+      <h1>ברוכים הבאים ל BsortoPhoto</h1>
       <img className="brand-mark" src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="הלוגו של BsortoPhoto" />
-      <h1 dir="ltr">BsortoPhoto</h1>
+      <h2 dir="ltr">המדיה החברתית של פלוגת הבשור</h2>
       <form className="card login-form" onSubmit={submit}>
-        <h2>כניסה</h2>
+        <h2>התחברות למשתמש</h2>
         <label htmlFor="team-choice">צוות</label>
         <select id="team-choice" required disabled={loading || busy} value={team} onChange={(e) => { setTeam(e.target.value); setSelected(""); }}>
           <option value="">בחירת צוות מהרשימה</option>
