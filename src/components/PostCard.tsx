@@ -48,11 +48,11 @@ export function PostCard({ post, onOpen }: { post: Post; onOpen: () => void }) {
         <Link to={`/user/${post.user_id}`} className="person">
           <Avatar name={post.display_name} path={post.avatar_path} />
           <span>
-            <strong>{post.display_name}</strong>
-            <small>{post.team_name}</small>
+            <strong style={{fontSize: 18}}>{post.display_name}</strong>
+            <small style={{fontSize: 14}}>{post.team_name}</small>
           </span>
         </Link>
-        <time dateTime={post.created_at}>{dateLabel(post.created_at)}</time>
+        <time dateTime={post.created_at} style={{fontSize: 16}}>{dateLabel(post.created_at)}</time>
       </header>
       <button
         className="photo-button"

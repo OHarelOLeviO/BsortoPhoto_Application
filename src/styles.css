@@ -154,6 +154,11 @@ label + label {
   font-size: 22px;
   font-weight: 700;
 }
+.logo span {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-40%);
+}
 .welcome {
   margin-right: auto;
   color: #a7b8ca;
@@ -202,6 +207,7 @@ label + label {
 }
 .page-heading {
   margin-bottom: 26px;
+  text-align: center;
 }
 .filters {
   display: flex;
@@ -363,17 +369,19 @@ label + label {
   width: 80px;
   height: 80px;
   font-size: 34px;
-  margin: auto;
+  margin: auto
 }
 .profile-heading h1 {
-  font-size: 28px;
+  font-size: 32px;
 }
 .profile-heading p {
   color: #a7b8ca;
+  font-size: 20px;
 }
 .profile-heading strong {
   display: block;
-  margin-top: 20px;
+  margin-top: 16px;
+  font-size: 18px;
   color: #59c6ff;
 }
 .grid {

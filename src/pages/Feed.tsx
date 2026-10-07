@@ -29,9 +29,6 @@ export function Feed() {
   }, [revision]);
   return (
     <>
-      <div className="page-heading">
-        <h1>האלבום שלנו</h1>
-      </div>
       <div className="filters" aria-label="סינון לפי צוות">
         <button
           aria-pressed={!team}

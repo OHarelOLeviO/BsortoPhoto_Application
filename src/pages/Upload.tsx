@@ -44,12 +44,11 @@ export function Upload() {
   return (
     <>
       <div className="page-heading">
-        <h1>העלאת תמונה</h1>
+        <h1>העלאת תמונה חדשה</h1>
       </div>
       <form onSubmit={submit} className="card upload">
         <label className="dropzone">
           📷<strong>בחירת תמונה</strong>
-          <span>JPEG, PNG, WebP · עד 15 MB</span>
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"
