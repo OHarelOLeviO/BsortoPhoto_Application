@@ -1,3 +1,4 @@
+import { getMember } from "../services/members";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Post, Profile as Member } from "../types";
@@ -16,28 +17,40 @@ export function Profile() {
   const [error, setError] = useState(false);
   const [revision, setRevision] = useState(0);
   const [viewer, setViewer] = useState<Post | null>(null);
-  const list = usePhotos(undefined, id);
+  const list = usePhotos(undefined, member?.id || id);
   useEffect(() => {
     let alive = true;
     setMember(null);
     setError(false);
-    Promise.all([
-      supabase.from("profiles").select("*,teams(name)").eq("id", id!).single(),
-      supabase
-        .from("posts")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", id!),
-    ]).then(([profile, count]) => {
-      if (alive) {
-        setError(Boolean(profile.error || count.error));
-        setMember(profile.data as Member);
-        setCount(count.count || 0);
-      }
-    });
+    getMember(id!)
+      .then(async (row) => {
+        const count = await supabase
+          .from("posts")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", row.id);
+        if (alive) {
+          setError(Boolean(count.error));
+          setMember({
+            ...row,
+            member_identifier: "",
+            is_active: true,
+            teams: { name: row.team_name },
+          } as Member);
+          setCount(count.count || 0);
+        }
+      })
+      .catch(() => {
+        if (alive) setError(true);
+      });
     return () => {
       alive = false;
     };
   }, [id, revision]);
+  useEffect(() => {
+    const changed = () => setRevision((v) => v + 1);
+    window.addEventListener("posts-changed", changed);
+    return () => window.removeEventListener("posts-changed", changed);
+  }, []);
   return (
     <>
       {error ? (

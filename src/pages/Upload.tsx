@@ -6,6 +6,7 @@ import { uploadPhoto } from "../services/photos";
 export function Upload() {
   const { profile } = useAuth();
   const navigate = useNavigate();
+  const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
   const [busy, setBusy] = useState(false);
@@ -28,7 +29,7 @@ export function Upload() {
     setError("");
     try {
       const image = await optimizeImage(file);
-      await uploadPhoto(profile.id, crypto.randomUUID(), image);
+      await uploadPhoto(profile.id, crypto.randomUUID(), image, description);
       navigate("/");
     } catch (e) {
       setError(
@@ -67,6 +68,17 @@ export function Upload() {
             }}
           />
         </label>
+        <label htmlFor="post-description" className="description-label">
+          תיאור
+        </label>
+        <textarea
+          id="post-description"
+          rows={3}
+          maxLength={2000}
+          value={description}
+          disabled={busy}
+          onChange={(e) => setDescription(e.target.value)}
+        />
         {preview && (
           <img
             className="preview"
