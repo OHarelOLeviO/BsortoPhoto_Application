@@ -69,10 +69,10 @@ function App() {
             ＋ <span>העלאה</span>
           </NavLink>
           <NavLink to={`/user/${profile.id}`}>
-            ◯ <span>הפרופיל שלי</span>
+            👤︎ <span>הפרופיל שלי</span>
           </NavLink>
           <NavLink to="/members">
-            ♧ <span>חברי הפלוגה</span>
+            ✮ <span>חברי הפלוגה</span>
           </NavLink>
         </nav>
         <main className="content">
