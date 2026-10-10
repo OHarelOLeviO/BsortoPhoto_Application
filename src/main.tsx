@@ -5,13 +5,21 @@ import { AuthProvider, useAuth } from "./hooks/useAuth";
 import { LikesProvider } from "./hooks/useLikes";
 import { configured, supabase } from "./services/client";
 import { Login } from "./pages/Login";
+import { Members } from "./pages/Members";
 import { Feed } from "./pages/Feed";
 import { Upload } from "./pages/Upload";
 import { Profile } from "./pages/Profile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 function App() {
   const { session, profile, loading, error, retry } = useAuth();
+  const [notice, setNotice] = useState("");
+  useEffect(() => {
+    const changed = (e: Event) =>
+      setNotice((e as CustomEvent<{ message?: string }>).detail?.message || "");
+    window.addEventListener("posts-changed", changed);
+    return () => window.removeEventListener("posts-changed", changed);
+  }, []);
   const [logoutError, setLogoutError] = useState("");
   async function logout() {
     const { error } = await supabase.auth.signOut();
@@ -42,6 +50,11 @@ function App() {
         </NavLink>
         <button onClick={() => void logout()}>התנתקות</button>
       </header>
+      {notice && (
+        <p role="status" className="app-notice">
+          {notice}
+        </p>
+      )}
       {logoutError && (
         <p role="alert" className="error">
           {logoutError}
@@ -58,10 +71,14 @@ function App() {
           <NavLink to={`/user/${profile.id}`}>
             ◯ <span>הפרופיל שלי</span>
           </NavLink>
+          <NavLink to="/members">
+            ♧ <span>חברי הפלוגה</span>
+          </NavLink>
         </nav>
         <main className="content">
           <Routes>
             <Route path="/" element={<Feed />} />
+            <Route path="/members" element={<Members />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/user/:id" element={<Profile />} />
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -81,7 +98,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       </HashRouter>
     ) : (
       <main className="login">
-        <img className="brand-mark" src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`} alt="BsortoPhoto" />
+        <img
+          className="brand-mark"
+          src={`${import.meta.env.BASE_URL}bsortophoto-logo.png`}
+          alt="BsortoPhoto"
+        />
         <h1 dir="ltr">BsortoPhoto</h1>
         <p>האתר מחכה לחיבור ל-Supabase.</p>
         <p>
