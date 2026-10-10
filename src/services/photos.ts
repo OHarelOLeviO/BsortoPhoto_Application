@@ -52,6 +52,7 @@ export async function uploadPhoto(
   userId: string,
   id: string,
   image: { blob: Blob; width: number; height: number },
+  description = "",
 ) {
   const path = `${userId}/${id}.jpg`;
   const bucket = supabase.storage.from("company-photos");
@@ -66,6 +67,7 @@ export async function uploadPhoto(
     image_path: path,
     image_width: image.width,
     image_height: image.height,
+    description: description.trim(),
   });
   if (row.error) {
     const cleanup = await bucket.remove([path]);
@@ -74,5 +76,22 @@ export async function uploadPhoto(
         ? "שמירת התמונה נכשלה. ייתכן שנותר קובץ; יש לעדכן את מנהל האתר."
         : "שמירת התמונה נכשלה והקובץ הוסר. נסה שוב.",
     );
+  }
+}
+
+export async function deletePost(post: Post) {
+  const { data, error } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", post.id)
+    .select("id");
+  if (error || !data?.length) throw error || new Error("Post unavailable");
+  try {
+    const cleanup = await supabase.storage
+      .from("company-photos")
+      .remove([post.image_path]);
+    return !cleanup.error;
+  } catch {
+    return false;
   }
 }
