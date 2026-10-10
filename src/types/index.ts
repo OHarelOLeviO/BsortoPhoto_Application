@@ -20,4 +20,6 @@ export type Post = {
   avatar_path: string | null;
   like_count: number;
   liked: boolean;
+  description?: string;
+  comment_count?: number;
 };
