@@ -22,6 +22,16 @@ create function storage.foldername(name text) returns text[] language sql immuta
       "utf8",
     ),
   );
+  for (const migration of [
+    "002_name_login_directory.sql",
+    "003_posts_comments_members.sql",
+  ])
+    await db.exec(
+      await readFile(
+        new URL("../supabase/migrations/" + migration, import.meta.url),
+        "utf8",
+      ),
+    );
   await db.exec(
     `insert into auth.users values('${a}'),('${b}');insert into public.teams(id,name) values('${t}','צוות בדיקה');insert into public.profiles(id,member_identifier,display_name,team_id) values('${a}','test-aaa','נועם','${t}'),('${b}','test-bbb','תמר','${t}');`,
   );
@@ -129,5 +139,72 @@ it("uses deterministic cursors, server team filters and current uploader team", 
   expect(
     (await db.query(`select * from public.photo_feed('${extra}')`)).rows.length,
   ).toBe(0);
+  await db.exec("reset role");
+});
+
+it("migrates empty descriptions, enforces comment authors and restricts post deletion to owners", async () => {
+  await db.exec("reset role;update public.profiles set is_active=true");
+  await asMember(b);
+  expect(
+    (await db.query("select description from public.posts limit 1")).rows[0]
+      .description,
+  ).toBe("");
+  await expect(
+    db.query(
+      `insert into public.comments(post_id,user_id,body) values('${p}','${a}','forged')`,
+    ),
+  ).rejects.toThrow();
+  await expect(
+    db.query(
+      `insert into public.comments(post_id,user_id,body) values('${p}','${b}',' ')`,
+    ),
+  ).rejects.toThrow();
+  await db.query(
+    `insert into public.comments(post_id,user_id,body) values('${p}','${b}','test comment')`,
+  );
+  expect(
+    (await db.query(`delete from public.posts where id='${p}' returning id`))
+      .rows,
+  ).toEqual([]);
+  await asMember(a);
+  expect(
+    (
+      await db.query(
+        `select comment_count from public.photo_feed() where id='${p}'`,
+      )
+    ).rows[0].comment_count,
+  ).toBe(1);
+  await db.query(`delete from public.posts where id='${p}'`);
+  expect(
+    (await db.query(`select * from public.comments where post_id='${p}'`)).rows,
+  ).toEqual([]);
+  expect(
+    (await db.query(`select * from public.likes where post_id='${p}'`)).rows,
+  ).toEqual([]);
+  await db.query(`delete from storage.objects where name='${a}/${p}.jpg'`);
+  await db.exec("reset role;set role anon");
+  await expect(
+    db.query("select * from public.member_directory()"),
+  ).rejects.toThrow();
+  await db.exec("reset role");
+  await db.query(
+    `insert into public.pending_members(id,display_name,team_id) values('77777777-7777-4777-8777-777777777777','pending','${t}')`,
+  );
+  await asMember(b);
+  expect(
+    (await db.query("select * from public.member_directory()")).rows.length,
+  ).toBe(3);
+  await db.exec(
+    `reset role;update public.profiles set is_active=false where id='${b}'`,
+  );
+  await asMember(b);
+  expect(
+    (await db.query("select * from public.member_directory()")).rows,
+  ).toEqual([]);
+  await expect(
+    db.query(
+      `insert into public.comments(post_id,user_id,body) values('66666666-6666-4666-8666-000000000001','${b}','inactive')`,
+    ),
+  ).rejects.toThrow();
   await db.exec("reset role");
 });
