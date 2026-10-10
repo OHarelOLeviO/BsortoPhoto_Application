@@ -1,3 +1,4 @@
+import { PostActions } from "./PostActions";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Post } from "../types";
@@ -23,7 +24,9 @@ export function Like({ post }: { post: Post }) {
           void toggle(post).catch((e) => setError((e as Error).message));
         }}
       >
-        <span className="like-icon" aria-hidden="true">{state.liked ? "♥" : "♡"}</span>
+        <span className="like-icon" aria-hidden="true">
+          {state.liked ? "♥" : "♡"}
+        </span>
         <span className="like-count">{state.like_count}</span>
         <span className="sr-only"> לייקים</span>
       </button>
@@ -49,11 +52,13 @@ export function PostCard({ post, onOpen }: { post: Post; onOpen: () => void }) {
         <Link to={`/user/${post.user_id}`} className="person">
           <Avatar name={post.display_name} path={post.avatar_path} />
           <span>
-            <strong style={{fontSize: 18}}>{post.display_name}</strong>
-            <small style={{fontSize: 14}}>{post.team_name}</small>
+            <strong style={{ fontSize: 18 }}>{post.display_name}</strong>
+            <small style={{ fontSize: 14 }}>{post.team_name}</small>
           </span>
         </Link>
-        <time dateTime={post.created_at} style={{fontSize: 16}}>{dateLabel(post.created_at)}</time>
+        <time dateTime={post.created_at} style={{ fontSize: 16 }}>
+          {dateLabel(post.created_at)}
+        </time>
       </header>
       <button
         className="photo-button"
@@ -67,8 +72,15 @@ export function PostCard({ post, onOpen }: { post: Post; onOpen: () => void }) {
           height={post.image_height}
         />
       </button>
+      {post.description && (
+        <p className="post-description">{post.description}</p>
+      )}
       <footer>
         <Like post={post} />
+        <button className="comments-link" onClick={onOpen}>
+          תגובות ({post.comment_count || 0})
+        </button>
+        <PostActions post={post} />
       </footer>
     </article>
   );

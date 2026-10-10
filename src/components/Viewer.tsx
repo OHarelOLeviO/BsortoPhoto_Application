@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { Post } from "../types";
+import { Comments } from "./Comments";
+import { PostActions } from "./PostActions";
 import { Photo } from "./Photo";
 import { Like, dateLabel } from "./PostCard";
 export function Viewer({ post, onClose }: { post: Post; onClose: () => void }) {
@@ -50,8 +52,13 @@ export function Viewer({ post, onClose }: { post: Post; onClose: () => void }) {
           {post.display_name} · {post.team_name}
         </Link>
         <time>{dateLabel(post.created_at)}</time>
+        {post.description && (
+          <p className="post-description">{post.description}</p>
+        )}
         <Like post={post} />
+        <PostActions post={post} onDeleted={onClose} />
       </div>
+      <Comments postId={post.id} />
     </dialog>
   );
 }

@@ -7,6 +7,8 @@ vi.mock("./PostCard", () => ({
   Like: () => <button>לייק</button>,
   dateLabel: () => "7 באוקטובר",
 }));
+vi.mock("./Comments", () => ({ Comments: () => null }));
+vi.mock("./PostActions", () => ({ PostActions: () => null }));
 import { Viewer } from "./Viewer";
 afterEach(cleanup);
 it("opens a native modal, locks scroll, handles Escape and restores focus", () => {
