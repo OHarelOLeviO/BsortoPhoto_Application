@@ -76,10 +76,16 @@ export function PostCard({ post, onOpen }: { post: Post; onOpen: () => void }) {
         <p className="post-description">{post.description}</p>
       )}
       <footer>
-        <Like post={post} />
-        <button className="comments-link" onClick={onOpen}>
-          תגובות ({post.comment_count || 0})
-        </button>
+        <div className="post-reactions">
+          <Like post={post} />
+          <button className="like comment-button" onClick={onOpen}>
+            <svg className="comment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" />
+            </svg>
+            <span className="like-count">{post.comment_count || 0}</span>
+            <span className="sr-only"> תגובות</span>
+          </button>
+        </div>
         <PostActions post={post} />
       </footer>
     </article>
